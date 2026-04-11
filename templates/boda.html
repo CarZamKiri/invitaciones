@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Boda de {{ novia }} y {{ novio }}</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; background-color: #fcfcfc; padding: 50px; }
+        .tarjeta { border: 2px solid #d4af37; padding: 40px; border-radius: 15px; max-width: 500px; margin: auto; background: white; }
+        h1 { color: #333; }
+        .fecha { font-size: 1.2em; color: #666; margin: 20px 0; }
+    </style>
+</head>
+<body>
+    <div class="tarjeta">
+        <h1>¡Nos casamos!</h1>
+        <h2>{{ novia }} & {{ novio }}</h2>
+        <p class="fecha">Te esperamos el <strong>{{ fecha }}</strong></p>
+        <p>Lugar: {{ lugar }}</p>
+        <hr>
+        <p><em>{{ mensaje_personalizado }}</em></p>
+    </div>
+</body>
+</html>
