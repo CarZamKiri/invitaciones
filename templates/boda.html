@@ -1,23 +1,87 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Boda de {{ novia }} y {{ novio }}</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400&display=swap" rel="stylesheet">
+    
     <style>
-        body { font-family: Arial, sans-serif; text-align: center; background-color: #fcfcfc; padding: 50px; }
-        .tarjeta { border: 2px solid #d4af37; padding: 40px; border-radius: 15px; max-width: 500px; margin: auto; background: white; }
-        h1 { color: #333; }
-        .fecha { font-size: 1.2em; color: #666; margin: 20px 0; }
+        .font-serif { font-family: 'Playfair Display', serif; }
+        .font-sans { font-family: 'Lato', sans-serif; }
+        
+        /* Imagen de fondo de portada con efecto Parallax */
+        .bg-hero {
+            /* Usamos una imagen genérica de Unsplash, luego te enseñaré a hacerla dinámica con el JSON */
+            background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('https://images.unsplash.com/photo-1519225421980-715cb0215aed?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed; 
+        }
     </style>
 </head>
-<body>
-    <div class="tarjeta">
-        <h1>¡Nos casamos!</h1>
-        <h2>{{ novia }} & {{ novio }}</h2>
-        <p class="fecha">Te esperamos el <strong>{{ fecha }}</strong></p>
-        <p>Lugar: {{ lugar }}</p>
-        <hr>
-        <p><em>{{ mensaje_personalizado }}</em></p>
-    </div>
+
+{% import 'componentes.html' as ui %}
+
+<body class="bg-stone-50 text-gray-800 font-sans antialiased selection:bg-stone-300">
+
+    <header class="bg-hero min-h-screen flex flex-col items-center justify-center text-center px-4 relative">
+        <p class="text-white text-sm md:text-xl tracking-[0.4em] uppercase mb-4 opacity-90">Nos Casamos</p>
+        
+        <h1 class="font-serif text-6xl md:text-8xl text-white italic drop-shadow-lg mb-6">
+            {{ novia }} & {{ novio }}
+        </h1>
+        
+        <p class="text-white text-lg md:text-2xl font-light tracking-widest opacity-90">
+            {{ fecha }}
+        </p>
+        
+        <div class="absolute bottom-10 animate-bounce">
+            <svg class="w-8 h-8 text-white opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
+        </div>
+    </header>
+
+    <section class="py-24 px-6 max-w-3xl mx-auto text-center">
+        <h2 class="font-serif text-4xl text-stone-800 mb-8">El Gran Día</h2>
+        <div class="w-16 h-px bg-stone-400 mx-auto mb-10"></div>
+        
+        <p class="text-xl text-stone-600 leading-relaxed font-light mb-16">
+            Tenemos el honor de invitarte a celebrar nuestra unión. Será un día lleno de amor, risas y momentos inolvidables que queremos compartir contigo.
+        </p>
+
+        {% if fecha_exacta %}
+            {{ ui.seccion_cuenta_regresiva(fecha_exacta) }}
+        {% endif %}
+
+        <div class="bg-white p-10 rounded-2xl shadow-sm border border-stone-100 mt-16">
+            <h3 class="font-serif text-2xl text-stone-700 mb-4">Ubicación</h3>
+            <p class="text-lg text-stone-800 font-medium mb-1">{{ lugar }}</p>
+            <p class="text-sm text-stone-400 mb-6">Recepción y Ceremonia</p>
+            
+            {% if latitud and longitud %}
+                {{ ui.seccion_mapa(lugar, latitud, longitud) }}
+            {% endif %}
+        </div>
+    </section>
+
+    {% if rsvp_telefono %}
+    <section class="bg-stone-200 py-24 px-6 text-center">
+        <h2 class="font-serif text-4xl text-stone-800 mb-6">Asistencia</h2>
+        <p class="text-stone-600 mb-10 max-w-lg mx-auto font-light">
+            Por favor, confirma tu asistencia para ayudarnos a organizar todos los detalles.
+        </p>
+        
+        {{ ui.boton_whatsapp(rsvp_telefono, "¡Hola! Confirmo mi asistencia a la boda de " + novia + " y " + novio, "Confirmar Asistencia") }}
+    </section>
+    {% endif %}
+
+    <footer class="bg-stone-900 text-stone-400 py-16 text-center text-sm font-light">
+        <p class="font-serif text-3xl italic text-stone-300 mb-4">{{ novia }} & {{ novio }}</p>
+        <p>¡Esperamos contar con tu presencia!</p>
+    </footer>
+
 </body>
 </html>

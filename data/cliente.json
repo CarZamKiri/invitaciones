@@ -1,8 +1,11 @@
 {
-    "plantilla": "boda.html",
-    "novio": "Carlos",
-    "novia": "Jessica",
-    "fecha": "20 de Noviembre de 2026",
-    "lugar": "Hacienda Los Encinos, Boca del Río",
-    "mensaje_personalizado": "¡Estamos muy emocionados de compartir este día contigo!"
-  }
+  "plantilla": "boda.html",
+  "novio": "Carlos",
+  "novia": "Jessica",
+  "fecha": "20 de Noviembre de 2026",
+  "fecha_exacta": "Nov 20, 2026 18:00:00",
+  "lugar": "Hacienda Los Encinos, Boca del Río",
+  "latitud": "19.1065", 
+  "longitud": "-96.1042",
+  "rsvp_telefono": "522291234567"
+}

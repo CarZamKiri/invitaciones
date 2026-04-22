@@ -1,23 +1,165 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Boda de Jessica y Carlos</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400&display=swap" rel="stylesheet">
+    
     <style>
-        body { font-family: Arial, sans-serif; text-align: center; background-color: #fcfcfc; padding: 50px; }
-        .tarjeta { border: 2px solid #d4af37; padding: 40px; border-radius: 15px; max-width: 500px; margin: auto; background: white; }
-        h1 { color: #333; }
-        .fecha { font-size: 1.2em; color: #666; margin: 20px 0; }
+        .font-serif { font-family: 'Playfair Display', serif; }
+        .font-sans { font-family: 'Lato', sans-serif; }
+        
+        /* Imagen de fondo de portada con efecto Parallax */
+        .bg-hero {
+            /* Usamos una imagen genérica de Unsplash, luego te enseñaré a hacerla dinámica con el JSON */
+            background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('https://images.unsplash.com/photo-1519225421980-715cb0215aed?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed; 
+        }
     </style>
 </head>
-<body>
-    <div class="tarjeta">
-        <h1>¡Nos casamos!</h1>
-        <h2>Jessica & Carlos</h2>
-        <p class="fecha">Te esperamos el <strong>20 de Noviembre de 2026</strong></p>
-        <p>Lugar: Hacienda Los Encinos, Boca del Río</p>
-        <hr>
-        <p><em>¡Estamos muy emocionados de compartir este día contigo!</em></p>
+
+
+
+<body class="bg-stone-50 text-gray-800 font-sans antialiased selection:bg-stone-300">
+
+    <header class="bg-hero min-h-screen flex flex-col items-center justify-center text-center px-4 relative">
+        <p class="text-white text-sm md:text-xl tracking-[0.4em] uppercase mb-4 opacity-90">Nos Casamos</p>
+        
+        <h1 class="font-serif text-6xl md:text-8xl text-white italic drop-shadow-lg mb-6">
+            Jessica & Carlos
+        </h1>
+        
+        <p class="text-white text-lg md:text-2xl font-light tracking-widest opacity-90">
+            20 de Noviembre de 2026
+        </p>
+        
+        <div class="absolute bottom-10 animate-bounce">
+            <svg class="w-8 h-8 text-white opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
+        </div>
+    </header>
+
+    <section class="py-24 px-6 max-w-3xl mx-auto text-center">
+        <h2 class="font-serif text-4xl text-stone-800 mb-8">El Gran Día</h2>
+        <div class="w-16 h-px bg-stone-400 mx-auto mb-10"></div>
+        
+        <p class="text-xl text-stone-600 leading-relaxed font-light mb-16">
+            Tenemos el honor de invitarte a celebrar nuestra unión. Será un día lleno de amor, risas y momentos inolvidables que queremos compartir contigo.
+        </p>
+
+        
+            
+    <div class="my-12">
+        <h3 class="font-serif text-2xl text-stone-700 mb-6 text-center">Faltan</h3>
+        
+        <div class="flex justify-center gap-3 sm:gap-6">
+            <div class="flex flex-col items-center bg-white w-20 sm:w-24 py-4 rounded-2xl shadow-sm border border-stone-100">
+                <span id="cd-dias" class="text-3xl sm:text-4xl font-bold text-stone-800 mb-1">00</span>
+                <span class="text-xs text-stone-400 uppercase tracking-widest">Días</span>
+            </div>
+            <div class="flex flex-col items-center bg-white w-20 sm:w-24 py-4 rounded-2xl shadow-sm border border-stone-100">
+                <span id="cd-horas" class="text-3xl sm:text-4xl font-bold text-stone-800 mb-1">00</span>
+                <span class="text-xs text-stone-400 uppercase tracking-widest">Hrs</span>
+            </div>
+            <div class="flex flex-col items-center bg-white w-20 sm:w-24 py-4 rounded-2xl shadow-sm border border-stone-100">
+                <span id="cd-minutos" class="text-3xl sm:text-4xl font-bold text-stone-800 mb-1">00</span>
+                <span class="text-xs text-stone-400 uppercase tracking-widest">Min</span>
+            </div>
+            <div class="flex flex-col items-center bg-white w-20 sm:w-24 py-4 rounded-2xl shadow-sm border border-stone-100">
+                <span id="cd-segundos" class="text-3xl sm:text-4xl font-bold text-yellow-600 mb-1">00</span>
+                <span class="text-xs text-stone-400 uppercase tracking-widest">Seg</span>
+            </div>
+        </div>
+
+        <script>
+            // Convertimos la fecha de Jinja a un formato que entienda JavaScript
+            const countDownDate = new Date("Nov 20, 2026 18:00:00").getTime();
+
+            // Actualizamos el reloj cada 1 segundo (1000 milisegundos)
+            const x = setInterval(function() {
+                const now = new Date().getTime();
+                const distance = countDownDate - now;
+
+                // Cálculos matemáticos para días, horas, minutos y segundos
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                // Mostramos los resultados en los elementos HTML, asegurando que tengan 2 dígitos
+                document.getElementById("cd-dias").innerHTML = days < 10 ? '0' + days : days;
+                document.getElementById("cd-horas").innerHTML = hours < 10 ? '0' + hours : hours;
+                document.getElementById("cd-minutos").innerHTML = minutes < 10 ? '0' + minutes : minutes;
+                document.getElementById("cd-segundos").innerHTML = seconds < 10 ? '0' + seconds : seconds;
+
+                // Si la cuenta regresiva termina
+                if (distance < 0) {
+                    clearInterval(x);
+                    document.getElementById("cd-dias").innerHTML = "00";
+                    document.getElementById("cd-horas").innerHTML = "00";
+                    document.getElementById("cd-minutos").innerHTML = "00";
+                    document.getElementById("cd-segundos").innerHTML = "00";
+                }
+            }, 1000);
+        </script>
     </div>
+
+        
+
+        <div class="bg-white p-10 rounded-2xl shadow-sm border border-stone-100 mt-16">
+            <h3 class="font-serif text-2xl text-stone-700 mb-4">Ubicación</h3>
+            <p class="text-lg text-stone-800 font-medium mb-1">Hacienda Los Encinos, Boca del Río</p>
+            <p class="text-sm text-stone-400 mb-6">Recepción y Ceremonia</p>
+            
+            
+                
+    <div class="mt-8 rounded-2xl overflow-hidden shadow-inner border border-stone-200">
+        <iframe 
+            width="100%" 
+            height="300" 
+            frameborder="0" 
+            scrolling="no" 
+            marginheight="0" 
+            marginwidth="0" 
+            src="https://maps.google.com/maps?q=19.1065,-96.1042&hl=es&z=14&amp;output=embed">
+        </iframes>
+    </div>
+    <a href="https://www.google.com/maps/search/?api=1&query=19.1065,-96.1042" 
+       target="_blank"
+       class="mt-4 inline-block text-stone-500 hover:text-stone-800 text-sm underline decoration-stone-300 underline-offset-4">
+       Abrir en Google Maps
+    </a>
+
+            
+        </div>
+    </section>
+
+    
+    <section class="bg-stone-200 py-24 px-6 text-center">
+        <h2 class="font-serif text-4xl text-stone-800 mb-6">Asistencia</h2>
+        <p class="text-stone-600 mb-10 max-w-lg mx-auto font-light">
+            Por favor, confirma tu asistencia para ayudarnos a organizar todos los detalles.
+        </p>
+        
+        
+    <a href="https://wa.me/522291234567?text=%C2%A1Hola%21%20Confirmo%20mi%20asistencia%20a%20la%20boda%20de%20Jessica%20y%20Carlos" 
+       target="_blank"
+       class="inline-block bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-8 rounded-full shadow-lg transition transform hover:scale-105 duration-300">
+        Confirmar Asistencia
+    </a>
+
+    </section>
+    
+
+    <footer class="bg-stone-900 text-stone-400 py-16 text-center text-sm font-light">
+        <p class="font-serif text-3xl italic text-stone-300 mb-4">Jessica & Carlos</p>
+        <p>¡Esperamos contar con tu presencia!</p>
+    </footer>
+
 </body>
 </html>

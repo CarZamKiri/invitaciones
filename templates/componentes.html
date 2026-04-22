@@ -1,0 +1,83 @@
+{% macro boton_whatsapp(telefono, mensaje, texto_boton="Confirmar Asistencia") %}
+    <a href="https://wa.me/{{ telefono }}?text={{ mensaje | urlencode }}" 
+       target="_blank"
+       class="inline-block bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-8 rounded-full shadow-lg transition transform hover:scale-105 duration-300">
+        {{ texto_boton }}
+    </a>
+{% endmacro %}
+
+{% macro seccion_mapa(ubicacion_nombre, latitud, longitud) %}
+    <div class="mt-8 rounded-2xl overflow-hidden shadow-inner border border-stone-200">
+        <iframe 
+            width="100%" 
+            height="300" 
+            frameborder="0" 
+            scrolling="no" 
+            marginheight="0" 
+            marginwidth="0" 
+            src="https://maps.google.com/maps?q={{ latitud }},{{ longitud }}&hl=es&z=14&amp;output=embed">
+        </iframes>
+    </div>
+    <a href="https://www.google.com/maps/search/?api=1&query={{ latitud }},{{ longitud }}" 
+       target="_blank"
+       class="mt-4 inline-block text-stone-500 hover:text-stone-800 text-sm underline decoration-stone-300 underline-offset-4">
+       Abrir en Google Maps
+    </a>
+{% endmacro %}
+
+{% macro seccion_cuenta_regresiva(fecha_objetivo) %}
+    <div class="my-12">
+        <h3 class="font-serif text-2xl text-stone-700 mb-6 text-center">Faltan</h3>
+        
+        <div class="flex justify-center gap-3 sm:gap-6">
+            <div class="flex flex-col items-center bg-white w-20 sm:w-24 py-4 rounded-2xl shadow-sm border border-stone-100">
+                <span id="cd-dias" class="text-3xl sm:text-4xl font-bold text-stone-800 mb-1">00</span>
+                <span class="text-xs text-stone-400 uppercase tracking-widest">Días</span>
+            </div>
+            <div class="flex flex-col items-center bg-white w-20 sm:w-24 py-4 rounded-2xl shadow-sm border border-stone-100">
+                <span id="cd-horas" class="text-3xl sm:text-4xl font-bold text-stone-800 mb-1">00</span>
+                <span class="text-xs text-stone-400 uppercase tracking-widest">Hrs</span>
+            </div>
+            <div class="flex flex-col items-center bg-white w-20 sm:w-24 py-4 rounded-2xl shadow-sm border border-stone-100">
+                <span id="cd-minutos" class="text-3xl sm:text-4xl font-bold text-stone-800 mb-1">00</span>
+                <span class="text-xs text-stone-400 uppercase tracking-widest">Min</span>
+            </div>
+            <div class="flex flex-col items-center bg-white w-20 sm:w-24 py-4 rounded-2xl shadow-sm border border-stone-100">
+                <span id="cd-segundos" class="text-3xl sm:text-4xl font-bold text-yellow-600 mb-1">00</span>
+                <span class="text-xs text-stone-400 uppercase tracking-widest">Seg</span>
+            </div>
+        </div>
+
+        <script>
+            // Convertimos la fecha de Jinja a un formato que entienda JavaScript
+            const countDownDate = new Date("{{ fecha_objetivo }}").getTime();
+
+            // Actualizamos el reloj cada 1 segundo (1000 milisegundos)
+            const x = setInterval(function() {
+                const now = new Date().getTime();
+                const distance = countDownDate - now;
+
+                // Cálculos matemáticos para días, horas, minutos y segundos
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                // Mostramos los resultados en los elementos HTML, asegurando que tengan 2 dígitos
+                document.getElementById("cd-dias").innerHTML = days < 10 ? '0' + days : days;
+                document.getElementById("cd-horas").innerHTML = hours < 10 ? '0' + hours : hours;
+                document.getElementById("cd-minutos").innerHTML = minutes < 10 ? '0' + minutes : minutes;
+                document.getElementById("cd-segundos").innerHTML = seconds < 10 ? '0' + seconds : seconds;
+
+                // Si la cuenta regresiva termina
+                if (distance < 0) {
+                    clearInterval(x);
+                    document.getElementById("cd-dias").innerHTML = "00";
+                    document.getElementById("cd-horas").innerHTML = "00";
+                    document.getElementById("cd-minutos").innerHTML = "00";
+                    document.getElementById("cd-segundos").innerHTML = "00";
+                }
+            }, 1000);
+        </script>
+    </div>
+{% endmacro %}
